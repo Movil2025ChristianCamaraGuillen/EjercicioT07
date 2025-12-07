@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import com.example.dessertclicker.R
 
 @Composable
-private fun DessertClickerAppBar(
+fun DessertClickerAppBar(
     onShareButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
