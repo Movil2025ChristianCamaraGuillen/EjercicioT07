@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.dessertclicker.R
 
-private fun shareSoldDessertsInformation(intentContext: Context, dessertsSold: Int, revenue: Int) {
+fun shareSoldDessertsInformation(intentContext: Context, dessertsSold: Int, revenue: Int) {
     val sendIntent = Intent().apply {
         action = Intent.ACTION_SEND
         putExtra(
