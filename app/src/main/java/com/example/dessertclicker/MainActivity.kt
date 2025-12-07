@@ -128,25 +128,6 @@ class MainActivity : ComponentActivity() {
 /**
  * Determine which dessert to show.
  */
-fun determineDessertToShow(
-    desserts: List<Dessert>,
-    dessertsSold: Int
-): Dessert {
-    var dessertToShow = desserts.first()
-    for (dessert in desserts) {
-        if (dessertsSold >= dessert.startProductionAmount) {
-            dessertToShow = dessert
-        } else {
-            // The list of desserts is sorted by startProductionAmount. As you sell more desserts,
-            // you'll start producing more expensive desserts as determined by startProductionAmount
-            // We know to break as soon as we see a dessert who's "startProductionAmount" is greater
-            // than the amount sold.
-            break
-        }
-    }
-
-    return dessertToShow
-}
 
 @Composable
 private fun DessertClickerApp(
@@ -205,107 +186,6 @@ private fun DessertClickerApp(
                 currentDessertPrice = dessertToShow.price
             },
             modifier = Modifier.padding(contentPadding)
-        )
-    }
-}
-
-@Composable
-fun DessertClickerScreen(
-    revenue: Int,
-    dessertsSold: Int,
-    @DrawableRes dessertImageId: Int,
-    onDessertClicked: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Box(modifier = modifier) {
-        Image(
-            painter = painterResource(R.drawable.bakery_back),
-            contentDescription = null,
-            contentScale = ContentScale.Crop
-        )
-        Column {
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-            ) {
-                Image(
-                    painter = painterResource(dessertImageId),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(dimensionResource(R.dimen.image_size))
-                        .height(dimensionResource(R.dimen.image_size))
-                        .align(Alignment.Center)
-                        .clickable { onDessertClicked() },
-                    contentScale = ContentScale.Crop,
-                )
-            }
-            TransactionInfo(
-                revenue = revenue,
-                dessertsSold = dessertsSold,
-                modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer)
-            )
-        }
-    }
-}
-
-@Composable
-private fun TransactionInfo(
-    revenue: Int,
-    dessertsSold: Int,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier = modifier) {
-        DessertsSoldInfo(
-            dessertsSold = dessertsSold,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(dimensionResource(R.dimen.padding_medium))
-        )
-        RevenueInfo(
-            revenue = revenue,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(dimensionResource(R.dimen.padding_medium))
-        )
-    }
-}
-
-@Composable
-private fun RevenueInfo(revenue: Int, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
-        Text(
-            text = stringResource(R.string.total_revenue),
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onSecondaryContainer
-        )
-        Text(
-            text = "$${revenue}",
-            textAlign = TextAlign.Right,
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onSecondaryContainer
-        )
-    }
-}
-
-@Composable
-private fun DessertsSoldInfo(dessertsSold: Int, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
-        Text(
-            text = stringResource(R.string.dessert_sold),
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSecondaryContainer
-        )
-        Text(
-            text = dessertsSold.toString(),
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSecondaryContainer
         )
     }
 }
