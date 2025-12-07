@@ -68,8 +68,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dessertclicker.data.Datasource
 import com.example.dessertclicker.model.Dessert
+import com.example.dessertclicker.ui.DessertClickerApp
+import com.example.dessertclicker.ui.DessertViewModel
 import com.example.dessertclicker.ui.theme.DessertClickerTheme
 
 // Tag for logging
@@ -79,17 +82,17 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate Called")
+
         setContent {
             DessertClickerTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .statusBarsPadding(),
-                ) {
-                    DessertClickerApp(desserts = Datasource.dessertList)
-                }
+
+                val viewModel: DessertViewModel = viewModel()
+                val uiState = viewModel.uiState
+
+                DessertClickerApp(
+                    uiState = uiState,
+                    onDessertClicked = viewModel::onDessertClicked
+                )
             }
         }
     }
@@ -122,13 +125,5 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy Called")
-    }
-}
-
-@Preview
-@Composable
-fun MyDessertClickerAppPreview() {
-    DessertClickerTheme {
-        DessertClickerApp(listOf(Dessert(R.drawable.cupcake, 5, 0)))
     }
 }
